@@ -70,7 +70,7 @@ var shades ={
 		uniform sampler2D tex0;\n\
 		\n\
     	void main(void) {\n\
-        	gl_FragColor = texture2D(tex0,tc*vec2(0.75,1.)+vec2(0.125,0.))*vColor;\n\
+        	gl_FragColor = texture2D(tex0,tc)*vColor;\n\
     	}",
     skinvs:
     	"precision mediump float;\n\

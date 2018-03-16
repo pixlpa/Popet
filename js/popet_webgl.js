@@ -15,7 +15,7 @@ var SKINSTATE = {
 	p4: [0,0,0,0],
 	theta: [0,0,0,0],
 	size: [0.8,0.8,0.8,0.8],
-	falloff: [0.25,0.25,0.25,0.25]
+	falloff: [0.5,0.5,0.5,0.5]
 }
 //method to translate stored settings into shader uniforms
 SKINSTATE.calc = function(){
@@ -55,15 +55,17 @@ function initSlabs(){
 }
 
 function initImages(){	
+	mc.globalCompositeOperation = 'source-in';
+	mc.drawImage(webcam,80,0,480,480,0,0,640,640);
 	camtex = gl.createTexture();
-	camtex.image = webcam;
+	camtex.image = mcan;
 	gl.bindTexture(gl.TEXTURE_2D, camtex);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
   	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, webcam);		
+   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);		
 }
 
 //the "animate" function is where the draw loop happens
@@ -78,14 +80,16 @@ function animate() {
 	popet.draw(skinpgm,camtex);
 	 			
    	//update camera texture
+   	mc.globalCompositeOperation = 'source-in';
+   	mc.drawImage(webcam,80,0,480,480,0,0,640,640);
 	gl.bindTexture(gl.TEXTURE_2D, camtex);
-   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, webcam);
+   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);
 }
 
 //The current best practice for camera input. This seems to change regularly so could break.	
 function startvideo() {
-    webcam.style.width = document.width + 'px';
-    webcam.style.height = document.height + 'px';
+    webcam.style.width = '640px';
+    webcam.style.height = '640px';
     webcam.setAttribute('autoplay', '');
     webcam.setAttribute('muted', '');
 	webcam.setAttribute('playsinline', '');
@@ -99,7 +103,6 @@ function startvideo() {
  	navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
         webcam.srcObject = stream;
         initImages();
-        animate();
     });
 }
 
