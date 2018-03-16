@@ -4,25 +4,27 @@
 <head>
   <meta charset="UTF-8">
   <title>popet-points</title>
-  
-  
-  
+ 
       <link rel="stylesheet" href="css/style.css">
 
   
 </head>
 
-<body>
+<body>  
+	<div style="font-size:4em;font-family:sans-serif;"><div id="startmessage"><em>click anywhere to start<div style="font-size:0.25em;">(and click "Allow" to enable camera)</em></div></div>
+	<canvas id='c' width="640px" height="640px"></canvas>
+	<canvas id="ui_canvas" width="640px" height="640px"></canvas></div>
+	<div style="position:absolute;left:680px;top:100px">
+		<button onclick="makeGIF()">GIF</button>
+	</div>
 
-  <canvas id="ui_canvas" width="640px" height="640px"></canvas>
-  
-  
-
-    <script  src="js/index.js"></script>
-
-
-
-
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src='js/pxslabs.js'></script>
+    <script type="text/javascript" src='js/pxshaders.js'></script>
+    <script type="text/javascript" src='js/pxglutils.js'></script>
+    <script type="text/javascript" src='js/popet_webgl.js'></script>
+    <script type="text/javascript"src="js/index.js"></script>
+    <script type="text/javascript" src="gif.js"></script>
 </body>
 
 </html>

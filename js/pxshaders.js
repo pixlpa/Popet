@@ -63,11 +63,22 @@ var shades ={
     	void main(void) {\n\
         	gl_FragColor = vColor;\n\
     	}",
+    skinfs:
+    	"precision mediump float;\n\
+    	varying vec4 vColor;\n\
+    	varying vec2 tc;\n\
+		uniform sampler2D tex0;\n\
+		\n\
+    	void main(void) {\n\
+        	gl_FragColor = texture2D(tex0,tc*vec2(0.75,1.)+vec2(0.125,0.))*vColor;\n\
+    	}",
     skinvs:
-    	"attribute vec3 pos;\n\
+    	"precision mediump float;\n\
+    	attribute vec3 pos;\n\
 		attribute vec4 color;\n\
 		attribute vec2 texcoord;\n\
 		varying vec2 tc;\n\
+		varying vec4 vColor;\n\
 		uniform vec4 p1;\n\
 		uniform vec4 p2;\n\
 		uniform vec4 p3;\n\
@@ -84,14 +95,13 @@ var shades ={
     		pval.y = smoothstep(size.y+falls.y,size.y-falls.y,length(posi-p2.xy));\n\
     		pval.z = smoothstep(size.y+falls.y,size.y-falls.y,length(posi-p3.xy));\n\
     		pval.w = smoothstep(size.y+falls.y,size.y-falls.y,length(posi-p4.xy));\n\
-    		pval = pval;\n\
-    		float mixamt = clamp(dot(pval,vec4(1.)),0.,1.);\n\
     		vec4 cosp = cos(theta);\n\
     		vec4 sinp = sin(theta);\n\
-    		vec2 t1 = ((pos-p1.xy)*mat2(cosp.x,sinp.x,-sinp.x,cosp.x)+p1.xy+p1.zw)*pval.x;\n\
-    		vec2 t2 = ((pos-p2.xy)*mat2(cosp.y,sinp.y,-sinp.y,cosp.y)+p2.xy+p2.zw)*pval.y;\n\
-    		vec2 t3 = ((pos-p3.xy)*mat2(cosp.z,sinp.z,-sinp.z,cosp.z)+p3.xy+p3.zw)*pval.z;\n\
-    		vec2 t4 = ((pos-p4.xy)*mat2(cosp.w,sinp.w,-sinp.w,cosp.w)+p4.xy+p4.zw)*pval.w;\n\
-			gl_Position = mix(pos,vec3((t1+t2+t3+t4),0.),mixamt));\n\
+    		vec2 t1 = mix(posi,((posi-p1.xy)*mat2(cosp.x,sinp.x,-sinp.x,cosp.x)+p1.xy+p1.zw),pval.x);\n\
+    		vec2 t2 = mix(t1,((posi-p2.xy)*mat2(cosp.y,sinp.y,-sinp.y,cosp.y)+p2.xy+p2.zw),pval.y);\n\
+    		vec2 t3 = mix(t2,((posi-p3.xy)*mat2(cosp.z,sinp.z,-sinp.z,cosp.z)+p3.xy+p3.zw),pval.z);\n\
+    		vec2 t4 = mix(t3,((posi-p4.xy)*mat2(cosp.w,sinp.w,-sinp.w,cosp.w)+p4.xy+p4.zw),pval.w);\n\
+    		vColor = color;\n\
+			gl_Position = vec4(t4,0.,1.);\n\
 		}"
 };

@@ -1,5 +1,9 @@
+canvas {
+	position:absolute;
+	top:8px;
+	left:8px;
+	z-index:0;
+}
 #ui_canvas {
-  position:absolute;
-  top:8px;
-  left:8px;
+  z-index:1;
 }
