@@ -39,7 +39,7 @@ function initGL(){
 	gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
 	gl.enable(gl.BLEND);
 	gl.disable(gl.DEPTH_TEST);
-	gl.clearColor(0.,0.,0.,0.);
+	gl.clearColor(1.,1.,1.,1.);
 	gl.viewport(0,0,c.width,c.height);
 }
 
