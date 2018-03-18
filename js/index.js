@@ -21,29 +21,30 @@ var rotamode = false;
 
 var gif;
 var giffing = false;
+var recording = false;
 
 var pops = [];
-for (i=0;i<4;i++){
-  pops[i] = new UIPoint(Math.random()*640,Math.random()*640,"#FF9900");
-  pops[i].draw();
-}
-
 var spops = [];
-for (i=0;i<4;i++){
-  spops[i] = new UIPoint(pops[i].x,pops[i].y,"#00bbFF");
-  spops[i].draw();
-}
-
 var track = [];
-for (i=0;i<4;i++){
-  var xx = pops[i].x;
-  var yy = pops[i].y;
-  track[i] = new history();
-  for(j=0;j<30;j++){
-    track[i].x[j]=xx;
-    track[i].y[j]=yy;
-    track[i].theta[j] = 0;
-  }
+freshpops();
+
+var stack = new FrameBank(32);
+
+function freshpops(){
+	for (i=0;i<4;i++){
+  		pops[i] = new UIPoint(Math.random()*640,Math.random()*640,"#FF9900");
+  		pops[i].draw();
+  		spops[i] = new UIPoint(pops[i].x,pops[i].y,"#00bbFF");
+  		spops[i].draw();
+  		var xx = pops[i].x;
+  		var yy = pops[i].y;
+  		track[i] = new history();
+  		for(j=0;j<30;j++){
+    		track[i].x[j]=xx;
+    		track[i].y[j]=yy;
+    		track[i].theta[j] = 0;
+  		}
+	}
 }
 
 function UIPoint(x,y,color) {
@@ -123,6 +124,28 @@ function testPoints (x,y){
   }
 }
 
+function FrameBank(frames){
+	this.f = [];
+	this.current = 0;
+	this.count = frames;
+	for(ff=0;ff<frames;ff++){
+		this.f[ff] = new Image();
+		this.f[ff].width = 640;
+		this.f[ff].height = 640;
+		uc.fillStyle = "#FFF";
+		uc.fillRect(0,0,640,640);
+		this.f[ff].src = ucan.toDataURL;
+	}
+	this.update = function(){
+		this.current++;
+		if (this.current>=this.count) this.current = 0;
+		return this.f[this.current];
+	}
+	this.record = function(source){
+		this.f[framenum].src = source.toDataURL();
+	}	
+}
+
 function ui_redraw(){
   uc.clearRect(0,0,640,640);
   if(active != -1){
@@ -179,6 +202,11 @@ function startEraser(){
 		mc.globalCompositeOperation = 'source-in';
 		c.style.display = "block";
 	}
+}
+
+function collapseLayer(){
+	recording = true;
+	framenum = 0;
 }
 
 ucan.addEventListener("mousedown",function(e){
@@ -259,6 +287,10 @@ function animate2(){
    				giffing = false;
    				gif.render();
 			}
+			if(recording){
+				recording = false;
+				freshpops();
+			}
    		}
   		for(i=0;i<4;i++){
     		if (i==active){
@@ -282,11 +314,14 @@ function animate2(){
   		setGLpoints();
   		animate();
  		if (giffing) gif.addFrame(c,{copy:true,delay:60});
+ 		if (recording) stack.record(c);
  	}
 }
 
 function makeGIF(){
 	giffing = true;
+	var gifbutton = document.getElementById("gifbutton");
+	gifbutton.classList.add("spinning");
 	framenum = 0;
 	gif = new GIF({
 		workers: 2,
@@ -297,5 +332,12 @@ function makeGIF(){
 	gif.on('finished', function(blob) {
         var link = document.createElement('a');
         window.open(URL.createObjectURL(blob));
+        var gifbutton = document.getElementById("gifbutton");
+        gifbutton.classList.remove("spinning");
+        //var image = new Image();
+        //image.src = blob;
+        //link.href = image;
+       	//link.download = "popet.gif";
+        //link.click();
 	});	
 }

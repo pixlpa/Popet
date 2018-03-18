@@ -5,6 +5,7 @@ var gl;
 var basevs,basefs,feedback;
 var camtex,skinvs,skinfs,skinpgm,ppgm;
 var popet;
+var bstock,btex;
 var webcam=document.createElement('video');
 
 //set the initial state of the effect
@@ -39,13 +40,14 @@ function initGL(){
 	gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
 	gl.enable(gl.BLEND);
 	gl.disable(gl.DEPTH_TEST);
-	gl.clearColor(1.,1.,1.,1.);
+	gl.clearColor(1,1,1,1);
 	gl.viewport(0,0,c.width,c.height);
 }
 
 function initSlabs(){
 	// generate the shaders
-	popet = new warpMesh(300,200);
+	popet = new warpMesh(200,200);
+	bstock = new pxBB();
 	basevs = pxShader(shades.basevs,gl.VERTEX_SHADER);
 	basefs = pxShader(shades.basefs,gl.FRAGMENT_SHADER);
 	skinvs = pxShader(shades.skinvs,gl.VERTEX_SHADER);
@@ -65,7 +67,15 @@ function initImages(){
   	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
   	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);		
+   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);	
+   	btex = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, btex);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, stack.update());		
 }
 
 //the "animate" function is where the draw loop happens
@@ -77,6 +87,7 @@ function animate() {
 	
 	//clear the frame
 	gl.clear(gl.COLOR_BUFFER_BIT);
+	bstock.draw(ppgm,btex);
 	popet.draw(skinpgm,camtex);
 	 			
    	//update camera texture
@@ -84,6 +95,8 @@ function animate() {
    	mc.drawImage(webcam,80,0,480,480,0,0,640,640);
 	gl.bindTexture(gl.TEXTURE_2D, camtex);
    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);
+   	gl.bindTexture(gl.TEXTURE_2D, btex);
+   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, stack.update());
 }
 
 //The current best practice for camera input. This seems to change regularly so could break.	

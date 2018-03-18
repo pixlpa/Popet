@@ -4,6 +4,20 @@ canvas {
 	left:8px;
 	z-index:0;
 }
+
 #ui_canvas {
   z-index:1;
+}
+
+.spinning {
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+    	transform: rotateZ(0deg);
+  	}
+  	100% {
+  		transform: rotateZ(360deg);
+    }
 }
