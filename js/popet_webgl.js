@@ -78,7 +78,7 @@ function initImages(){
   	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
   	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, stack.update());		
+   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, backcrop);		
 }
 
 //the "animate" function is where the draw loop happens
@@ -91,17 +91,19 @@ function animate() {
 	//clear the frame
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	
-	//bstock.draw(ppgm,btex);
+	if (useback) bstock.draw(ppgm,btex);
 	popet.draw(skinpgm,camtex);
 
    	//update camera texture
    	mc.globalCompositeOperation = 'source-in';
-   	mc.drawImage(webcam,80,0,480,480,0,0,640,640);
+   	if(usefront) mc.drawImage(frontcrop,0,0,640,640,0,0,640,640); 
+   	else mc.drawImage(webcam,80,0,480,480,0,0,640,640);
 	gl.bindTexture(gl.TEXTURE_2D, camtex);
    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);
-   	//disabling this so the background loop is no longer updating.
-   	//gl.bindTexture(gl.TEXTURE_2D, btex);
-   	//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, stack.update());
+   	if(useback) {
+   		gl.bindTexture(gl.TEXTURE_2D, btex);
+   		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, backcrop);
+   	}
 }
 
 //The current best practice for camera input. This seems to change regularly so could break.	

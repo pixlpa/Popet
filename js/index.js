@@ -1,7 +1,13 @@
 var ucan = document.getElementById("ui_canvas");
 var uc = ucan.getContext('2d');
 var jam = new Image(); //image for texturing (w/ mask)
-var maj = new Image(); //source image
+var frontimage = new Image(); //front image
+var backimage = new Image(); //back image
+var frontcrop = new Image(); //front image cropped
+var backcrop = new Image(); //back image cropped
+
+var usefront = false;
+var useback = false;
 
 var mcan = document.createElement('canvas');
 mcan.width = 640;
@@ -10,6 +16,11 @@ var mc = mcan.getContext('2d');
 mc.globalCompositeOperation = 'source-over';
 mc.fillRect(0,0,640,640);
 mc.globalCompositeOperation = 'source-in';
+
+var filecan = document.createElement('canvas');
+filecan.width = 640;
+filecan.height = 640;
+var fc = filecan.getContext('2d');
 
 var erase = false;
 var eraser = new EraseBrush();
@@ -86,7 +97,8 @@ function EraseBrush() {
   this.active = false;
   this.draw = function(){
     if (this.mode == "paint"){
-      uc.drawImage(webcam, (this.x-20)/1.3333+80, (this.y-20)/1.3333, 30,30,this.x-20, this.y-20, 40, 40);
+      if(usefront) uc.drawImage(frontcrop,this.x-20,this.y-20,40,40,this.x-20, this.y-20, 40, 40)
+      else uc.drawImage(webcam, (this.x-20)/1.3333+80, (this.y-20)/1.3333, 30,30,this.x-20, this.y-20, 40, 40);
     }
     else if (this.mode == "erase"){
       uc.clearRect(this.x-20,this.y-20,40,40);
@@ -344,4 +356,62 @@ function makeGIF(){
        	//link.download = "popet.gif";
         //link.click();
 	});	
+}
+
+function handleFrontImage(files){
+	var file = files[0];
+	frontimage.onload = function(){
+			fc.clearRect(0,0,640,640);
+    		var dif = frontimage.width-frontimage.height;
+    		console.log(dif+" "+frontimage.width+" "+frontimage.height);
+    		if (dif>=0){
+    			fc.drawImage(frontimage,dif/2,0,frontimage.height,frontimage.height,0,0,640,640);
+    			frontcrop.src = filecan.toDataURL();
+    		}
+    		else {
+    			fc.drawImage(frontimage,0,dif/2,frontimage.width,frontimage.width,0,0,640,640);
+    			frontcrop.src = filecan.toDataURL();
+    		} 
+	}
+    
+    if (!file.type.startsWith('image/')){ ;; }
+    else {
+    	frontimage.file = file;
+    
+    	var reader = new FileReader();
+    	reader.onload = (function() { return function(e) { 
+    		usefront = true;
+    		frontimage.src = e.target.result;
+    		}; })(frontimage);
+    	reader.readAsDataURL(file);
+    	usefront = true;
+    }
+}
+
+function handleBackImage(files){
+	var file = files[0];
+    backimage.onload = function(){
+   		fc.clearRect(0,0,640,640);
+    		var dif = backimage.width-backimage.height;
+    		if (dif>=0){
+    			fc.drawImage(backimage,dif/2,0,backimage.height,backimage.height,0,0,640,640);
+    			backcrop.src = filecan.toDataURL();
+    		}
+    		else {
+    			fc.drawImage(backimage,0,dif/2,backimage.width,backimage.width,0,0,640,640);
+    			backcrop.src = filecan.toDataURL();
+    		}
+	}
+    if (!file.type.startsWith('image/')){ ;; }
+    else{
+    	backimage.file = file;
+    
+    	var reader = new FileReader();
+    	reader.onload = (function() { return function(e) { 
+    		useback = true;
+    		backimage.src = e.target.result;
+    		}; })(backimage);
+   		 reader.readAsDataURL(file);
+    	useback = true;
+    }
 }

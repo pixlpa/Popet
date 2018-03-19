@@ -14,10 +14,14 @@
 	<div style="font-size:4em;font-family:sans-serif;"><div id="startmessage"><em>click anywhere to start<div style="font-size:0.25em;">(and click "Allow" to enable camera)</em></div></div>
 	<canvas id='c' width="640px" height="640px"></canvas>
 	<canvas id="ui_canvas" width="640px" height="640px"></canvas></div>
-	<div style="position:absolute;left:680px;top:100px">
+	<div style="position:absolute;left:680px;top:100px" id="extras">
 		<button onclick="makeGIF()" id="gifbutton" style="transform:rotateZ(0deg);">GIF</button><br />
 		<button onclick="startEraser()" id="erasebutton">Edit Mask</button><br />
 		<button onclick="freshpops()" id="freshbutton">Freshen Up</button><br />
+		<h2>Load Foreground Image:</h2>
+		<input type="file" id="frontinput" onchange="handleFrontImage(this.files)"><br />
+		<h2>Load Background Image:</h2>
+		<input type="file" id="backinput" onchange="handleBackImage(this.files)">
 		<p>Welcome to Popet, a new experimental puppet-style animation tool based on realtime skinning.<br />
 		<ul><li>Drag the dots around to animate</li>
 			<li>Shift-drag to reposition the source points</li>
@@ -26,6 +30,7 @@
 			TODO: Replace camera with still image loader. Add mask-painting tools. Considering support for layering by rendering out current loop to an array of images.
 			</p>
 	</div>
+
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script type="text/javascript" src='js/pxslabs.js'></script>
