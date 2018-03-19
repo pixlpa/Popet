@@ -365,11 +365,11 @@ function handleFrontImage(files){
     		var dif = frontimage.width-frontimage.height;
     		console.log(dif+" "+frontimage.width+" "+frontimage.height);
     		if (dif>=0){
-    			fc.drawImage(frontimage,dif/2,0,frontimage.height,frontimage.height,0,0,640,640);
+    			fc.drawImage(frontimage,dif*0.5,0,frontimage.height,frontimage.height,0,0,640,640);
     			frontcrop.src = filecan.toDataURL();
     		}
     		else {
-    			fc.drawImage(frontimage,0,dif/2,frontimage.width,frontimage.width,0,0,640,640);
+    			fc.drawImage(frontimage,0,-dif*0.5,frontimage.width,frontimage.width,0,0,640,640);
     			frontcrop.src = filecan.toDataURL();
     		} 
 	}
@@ -394,11 +394,11 @@ function handleBackImage(files){
    		fc.clearRect(0,0,640,640);
     		var dif = backimage.width-backimage.height;
     		if (dif>=0){
-    			fc.drawImage(backimage,dif/2,0,backimage.height,backimage.height,0,0,640,640);
+    			fc.drawImage(backimage,dif*0.5,0,backimage.height,backimage.height,0,0,640,640);
     			backcrop.src = filecan.toDataURL();
     		}
     		else {
-    			fc.drawImage(backimage,0,dif/2,backimage.width,backimage.width,0,0,640,640);
+    			fc.drawImage(backimage,0,-dif*0.5,backimage.width,backimage.width,0,0,640,640);
     			backcrop.src = filecan.toDataURL();
     		}
 	}
