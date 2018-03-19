@@ -303,6 +303,10 @@ function animate2(){
       				track[i].y[framenum] = pops[i].y;
       				pops[i].theta = track[i].theta[framenum];
       			}
+      			else {
+      				pops[i].set(track[i].x[framenum],track[i].y[framenum]);
+					pops[i].theta = track[i].theta[framenum];
+				}
     		}
     		else {
 				pops[i].set(track[i].x[framenum],track[i].y[framenum]);

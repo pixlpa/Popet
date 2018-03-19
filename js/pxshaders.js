@@ -103,5 +103,23 @@ var shades ={
     		vec2 t4 = mix(t3,((posi-p4.xy)*mat2(cosp.w,sinp.w,-sinp.w,cosp.w)+p4.xy+p4.zw),pval.w);\n\
     		vColor = color;\n\
 			gl_Position = vec4(t4,0.,1.);\n\
-		}"
+		}",
+		gridfs:
+			"#extension GL_EXT_shader_texture_lod : enable\n\
+			#extension GL_OES_standard_derivatives : enable\n\
+			\n\
+			precision mediump float;\n\
+    		varying vec4 vColor;\n\
+    		varying vec2 tc;\n\
+			uniform sampler2D tex0;\n\
+			uniform float xfade;\n\
+			\n\
+			void main()\n\
+			{   \n\
+				vec4 a = texture2D(tex0, tc);\n\
+				// output texture\n\
+    			float distx = step(abs(0.5-mod(tc.x*25.,1.)),0.5-xfade*fwidth(tc.x));\n\
+    			float disty = step(abs(0.5-mod(tc.y*25.,1.)),0.5-xfade*fwidth(tc.y));\n\
+				gl_FragColor = vColor*vec4(0.,0.,0.,1.-distx*disty);\n\
+			}"
 };

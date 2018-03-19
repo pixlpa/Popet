@@ -3,7 +3,7 @@ var gl;
 
 //set up globals
 var basevs,basefs,feedback;
-var camtex,skinvs,skinfs,skinpgm,ppgm;
+var camtex,skinvs,skinfs,skinpgm,ppgm,gridfs,gridpgm;
 var popet;
 var bstock,btex;
 var webcam=document.createElement('video');
@@ -16,7 +16,7 @@ var SKINSTATE = {
 	p4: [0,0,0,0],
 	theta: [0,0,0,0],
 	size: [0.8,0.8,0.8,0.8],
-	falloff: [0.5,0.5,0.5,0.5]
+	falloff: [0.75,0.75,0.75,0.75]
 }
 //method to translate stored settings into shader uniforms
 SKINSTATE.calc = function(){
@@ -42,6 +42,8 @@ function initGL(){
 	gl.disable(gl.DEPTH_TEST);
 	gl.clearColor(1,1,1,1);
 	gl.viewport(0,0,c.width,c.height);
+	gl.getExtension('OES_standard_derivatives');
+	gl.getExtension('EXT_shader_texture_lod');
 }
 
 function initSlabs(){
@@ -52,6 +54,7 @@ function initSlabs(){
 	basefs = pxShader(shades.basefs,gl.FRAGMENT_SHADER);
 	skinvs = pxShader(shades.skinvs,gl.VERTEX_SHADER);
 	skinfs = pxShader(shades.skinfs,gl.FRAGMENT_SHADER);
+	gridfs = pxShader(shades.gridfs,gl.FRAGMENT_SHADER);
 	ppgm = pxProgram(basevs,basefs);
 	skinpgm = pxProgram(skinvs,skinfs);
 }
@@ -87,16 +90,18 @@ function animate() {
 	
 	//clear the frame
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	bstock.draw(ppgm,btex);
+	
+	//bstock.draw(ppgm,btex);
 	popet.draw(skinpgm,camtex);
-	 			
+
    	//update camera texture
    	mc.globalCompositeOperation = 'source-in';
    	mc.drawImage(webcam,80,0,480,480,0,0,640,640);
 	gl.bindTexture(gl.TEXTURE_2D, camtex);
    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);
-   	gl.bindTexture(gl.TEXTURE_2D, btex);
-   	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, stack.update());
+   	//disabling this so the background loop is no longer updating.
+   	//gl.bindTexture(gl.TEXTURE_2D, btex);
+   	//gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, stack.update());
 }
 
 //The current best practice for camera input. This seems to change regularly so could break.	
