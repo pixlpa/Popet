@@ -98,9 +98,9 @@ var shades ={
     		vec4 cosp = cos(theta);\n\
     		vec4 sinp = sin(theta);\n\
     		vec2 t1 = mix(posi,((posi-p1.xy)*mat2(cosp.x,sinp.x,-sinp.x,cosp.x)+p1.xy+p1.zw),pval.x);\n\
-    		vec2 t2 = mix(t1,((t1-p2.xy)*mat2(cosp.y,sinp.y,-sinp.y,cosp.y)+p2.xy+p2.zw),pval.y);\n\
-    		vec2 t3 = mix(t2,((t2-p3.xy)*mat2(cosp.z,sinp.z,-sinp.z,cosp.z)+p3.xy+p3.zw),pval.z);\n\
-    		vec2 t4 = mix(t3,((t3-p4.xy)*mat2(cosp.w,sinp.w,-sinp.w,cosp.w)+p4.xy+p4.zw),pval.w);\n\
+    		vec2 t2 = mix(t1,((posi-p2.xy)*mat2(cosp.y,sinp.y,-sinp.y,cosp.y)+p2.xy+p2.zw),pval.y);\n\
+    		vec2 t3 = mix(t2,((posi-p3.xy)*mat2(cosp.z,sinp.z,-sinp.z,cosp.z)+p3.xy+p3.zw),pval.z);\n\
+    		vec2 t4 = mix(t3,((posi-p4.xy)*mat2(cosp.w,sinp.w,-sinp.w,cosp.w)+p4.xy+p4.zw),pval.w);\n\
     		vColor = color;\n\
 			gl_Position = vec4(t4,0.,1.);\n\
 		}",

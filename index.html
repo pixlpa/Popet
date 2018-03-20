@@ -31,7 +31,14 @@
 		<input type="file" id="backinput" onchange="handleBackImage(this.files)"><br /><br />
 		<p><em>TODO: Styling/UI improvements. Mobile support fixes. responsive layout? GIF popover instead of new window.</em></p>
 	</div>
-
+	<div id="gif-over" >
+		<div id="gif-overback" ></div>
+		<div id="gif-overfront">
+		<img id="gif-tag" />
+		<button onclick="downloadgif()">Save GIF</button>
+		<button onclick="closegif()">X</button>
+		</div>
+	</div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script type="text/javascript" src='js/pxslabs.js'></script>

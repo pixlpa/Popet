@@ -347,7 +347,13 @@ function makeGIF(){
 	
 	gif.on('finished', function(blob) {
         var link = document.createElement('a');
-        window.open(URL.createObjectURL(blob));
+        //window.open(URL.createObjectURL(blob));
+        var gifup = document.getElementById('gif-tag');
+        var gifover = document.getElementById('gif-over');
+        gifup.onload= function(){
+        	gifover.style.display = 'block';	
+        }
+        gifup.src = URL.createObjectURL(blob);
         var gifbutton = document.getElementById("gifbutton");
         gifbutton.classList.remove("spinning");
         //var image = new Image();
@@ -356,6 +362,18 @@ function makeGIF(){
        	//link.download = "popet.gif";
         //link.click();
 	});	
+}
+
+function downloadgif(){
+	var gifup = document.getElementById('gif-tag');
+	var link = document.createElement('a');
+    link.href = gifup.src;
+    link.download = 'popet.gif';
+    link.click();
+}
+function closegif(){
+	var gifover = document.getElementById('gif-over');
+	gifover.style.display = "none";
 }
 
 function handleFrontImage(files){
