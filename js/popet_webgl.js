@@ -15,7 +15,7 @@ var SKINSTATE = {
 	p3: [0,0,0,0],
 	p4: [0,0,0,0],
 	theta: [0,0,0,0],
-	size: [0.8,0.8,0.8,0.8],
+	size: [0.6,0.6,0.6,0.6],
 	falloff: [0.75,0.75,0.75,0.75]
 }
 //method to translate stored settings into shader uniforms

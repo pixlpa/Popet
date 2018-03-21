@@ -1,3 +1,6 @@
+body{
+	background-color: #e8eff6;
+}
 canvas {
 	position:absolute;
 	top:8px;
@@ -5,8 +8,21 @@ canvas {
 	z-index:0;
 }
 
+#c {
+	box-shadow:20px 20px 0px #b1bfcb;
+}
+
 #ui_canvas {
   z-index:1;
+}
+
+#extras {
+	position:absolute;
+	left:700px;
+	top:8px;
+	width:480px;
+	font-family: Helvetica, sans-serif;
+	font-size:0.75em;
 }
 
 .spinning {
@@ -22,9 +38,37 @@ canvas {
     }
 }
 
+ul {
+	list-style-type: none;
+	list-style: none;
+	padding:5px;
+}
+
+li {
+	left-margin:0px;
+	padding-top:10px;
+}
+
+h1 {
+	font-size: 4em;
+}
 button {
-	font-size:1.5em;
-	font-family: Helvetica,sans-serif;
+    padding: 10px;
+    margin-left:10px;
+    width: 90px;
+    background-color: #7e92dd;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 2px 2px 3px #d8c333;
+    font-size: 14px;
+}
+
+button:active{
+	background-color:#5cf;
+}
+
+button:visited{
+	background-color:#4bf;
 }
 
 input {

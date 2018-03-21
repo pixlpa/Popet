@@ -14,22 +14,22 @@
 	<div style="font-size:4em;font-family:sans-serif;"><div id="startmessage"><em>click anywhere to start<div style="font-size:0.25em;">(and click "Allow" to enable camera)</em></div></div>
 	<canvas id='c' width="640px" height="640px"></canvas>
 	<canvas id="ui_canvas" width="640px" height="640px"></canvas></div>
-	<div style="position:absolute;left:680px;top:50px" id="extras">
-		<h2><em>POPET</em></h2>
+	<div id="extras">
+		<h1><em>POPET</em></h1>
 		<ul><li>Click anywhere to start camera</li>
 			<li>Drag the dots around to animate</li>
 			<li>Shift-drag to reposition the (blue) source points</li>
-			<li>Option-drag the (blue) source points horizontally to animate rotation</li>
+			<li>Option-drag the points horizontally to rotate</li>
 		</ul>
-		<h2>Features:</h2>
-		<button onclick="makeGIF()" id="gifbutton" style="transform:rotateZ(0deg);">GIF</button><br />
-		<button onclick="startEraser()" id="erasebutton">Edit Mask</button><br />
-		<button onclick="freshpops()" id="freshbutton">Reset Animation</button><br />
-		<h2>Load Foreground Image:</h2>
-		<input type="file" id="frontinput" onchange="handleFrontImage(this.files)"><br />
-		<h2>Load Background Image:</h2>
-		<input type="file" id="backinput" onchange="handleBackImage(this.files)"><br /><br />
-		<p><em>TODO: Styling/UI improvements. Mobile support fixes. responsive layout? GIF popover instead of new window.</em></p>
+		<ul>
+		<li><button onclick="startEraser()" id="erasebutton">Edit Mask</button></li>
+		<li><button onclick="freshpops()" id="freshbutton">Reset</button></li>
+		<li><button onclick="makeGIF()" id="gifbutton" style="transform:rotateZ(0deg);">GIF</button></li>
+		</ul>
+		<ul>
+		<li><strong>Foreground Image:</strong> <input type="file" id="frontinput" onchange="handleFrontImage(this.files)"></li>
+		<li><strong>Background Image:</strong> <input type="file" id="backinput" onchange="handleBackImage(this.files)"></li>
+		</ul>
 	</div>
 	<div id="gif-over" >
 		<div id="gif-overback" ></div>
