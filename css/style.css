@@ -49,8 +49,21 @@ li {
 	padding-top:10px;
 }
 
+.helper{
+	background-color:#b1d2d9;
+	border-radius:20px;
+	width:320px;
+	padding: 20px;
+}
+
+.actions{
+	background-color:#96d5ca;
+	border-radius:20px;
+	width:320px;
+	padding: 20px;
+}
 h1 {
-	font-size: 4em;
+	font-size: 6em;
 }
 button {
     padding: 10px;
