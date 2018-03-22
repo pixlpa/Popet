@@ -95,14 +95,18 @@ var shades ={
     		pval.y = smoothstep(size.y+falls.y,size.y-falls.y,length(posi-p2.xy));\n\
     		pval.z = smoothstep(size.y+falls.y,size.y-falls.y,length(posi-p3.xy));\n\
     		pval.w = smoothstep(size.y+falls.y,size.y-falls.y,length(posi-p4.xy));\n\
+    		float mixamt = clamp(1.-dot(pval,vec4(1.)),0.,1.);\n\
     		vec4 cosp = cos(theta);\n\
     		vec4 sinp = sin(theta);\n\
+    		vec4 center = (p1+p2+p3+p4)*0.25;\n\
+    		vec2 cs0 = vec2(cos(dot(theta,vec4(0.25))),sin(dot(theta,vec4(0.25))));\n\
     		vec2 t1 = mix(posi,((posi-p1.xy)*mat2(cosp.x,sinp.x,-sinp.x,cosp.x)+p1.xy+p1.zw),pval.x);\n\
     		vec2 t2 = mix(t1,((posi-p2.xy)*mat2(cosp.y,sinp.y,-sinp.y,cosp.y)+p2.xy+p2.zw),pval.y);\n\
     		vec2 t3 = mix(t2,((posi-p3.xy)*mat2(cosp.z,sinp.z,-sinp.z,cosp.z)+p3.xy+p3.zw),pval.z);\n\
     		vec2 t4 = mix(t3,((posi-p4.xy)*mat2(cosp.w,sinp.w,-sinp.w,cosp.w)+p4.xy+p4.zw),pval.w);\n\
+    		vec2 t5 = mix(t4,(t4+center.zw),mixamt);\n\
     		vColor = color;\n\
-			gl_Position = vec4(t4,0.,1.);\n\
+			gl_Position = vec4(t5,0.,1.);\n\
 		}",
 		gridfs:
 			"#extension GL_EXT_shader_texture_lod : enable\n\
