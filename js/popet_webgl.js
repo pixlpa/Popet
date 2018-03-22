@@ -7,6 +7,27 @@ var camtex,skinvs,skinfs,skinpgm,ppgm,gridfs,gridpgm;
 var popet;
 var bstock,btex;
 var webcam=document.createElement('video');
+var isVideo = false;
+
+var pgloc = {
+	p1:0,
+	p2:0,
+	p3:0,
+	p4:0,
+	theta:0,
+	falloff:0,
+	size:0,
+	init :function(){
+		gl.useProgram(skinpgm);
+		this.p1 = gl.getUniformLocation(skinpgm,"p1");
+		this.p2 = gl.getUniformLocation(skinpgm,"p2");
+		this.p3 = gl.getUniformLocation(skinpgm,"p3");
+		this.p4 = gl.getUniformLocation(skinpgm,"p4");
+		this.theta = gl.getUniformLocation(skinpgm,"theta");
+		this.falloff = gl.getUniformLocation(skinpgm,"falloff");
+		this.size = gl.getUniformLocation(skinpgm,"size");
+	}
+};
 
 //set the initial state of the effect
 var SKINSTATE = {
@@ -21,13 +42,13 @@ var SKINSTATE = {
 //method to translate stored settings into shader uniforms
 SKINSTATE.calc = function(){
 	gl.useProgram(skinpgm);
-	gl.uniform4f(gl.getUniformLocation(skinpgm,"p1"),this.p1[0],this.p1[1],this.p1[2],this.p1[3]);
-	gl.uniform4f(gl.getUniformLocation(skinpgm,"p2"),this.p2[0],this.p2[1],this.p2[2],this.p2[3]);
-	gl.uniform4f(gl.getUniformLocation(skinpgm,"p3"),this.p3[0],this.p3[1],this.p3[2],this.p3[3]);
-	gl.uniform4f(gl.getUniformLocation(skinpgm,"p4"),this.p4[0],this.p4[1],this.p4[2],this.p4[3]);
-	gl.uniform4f(gl.getUniformLocation(skinpgm,"theta"),this.theta[0],this.theta[1],this.theta[2],this.theta[3]);
-	gl.uniform4f(gl.getUniformLocation(skinpgm,"size"),this.size[0],this.size[1],this.size[2],this.size[3]);
-	gl.uniform4f(gl.getUniformLocation(skinpgm,"falloff"),this.falloff[0],this.falloff[1],this.falloff[2],this.falloff[3]);
+	gl.uniform4f(pgloc.p1,this.p1[0],this.p1[1],this.p1[2],this.p1[3]);
+	gl.uniform4f(pgloc.p2,this.p2[0],this.p2[1],this.p2[2],this.p2[3]);
+	gl.uniform4f(pgloc.p3,this.p3[0],this.p3[1],this.p3[2],this.p3[3]);
+	gl.uniform4f(pgloc.p4,this.p4[0],this.p4[1],this.p4[2],this.p4[3]);
+	gl.uniform4f(pgloc.theta,this.theta[0],this.theta[1],this.theta[2],this.theta[3]);
+	gl.uniform4f(pgloc.size,this.size[0],this.size[1],this.size[2],this.size[3]);
+	gl.uniform4f(pgloc.falloff,this.falloff[0],this.falloff[1],this.falloff[2],this.falloff[3]);
 }
 
 //initialize the important stuff
@@ -57,6 +78,7 @@ function initSlabs(){
 	gridfs = pxShader(shades.gridfs,gl.FRAGMENT_SHADER);
 	ppgm = pxProgram(basevs,basefs);
 	skinpgm = pxProgram(skinvs,skinfs);
+	pgloc.init()
 }
 
 function initImages(){	
@@ -97,7 +119,7 @@ function animate() {
    	//update camera texture
    	mc.globalCompositeOperation = 'source-in';
    	if(usefront) mc.drawImage(frontcrop,0,0,640,640,0,0,640,640); 
-   	else mc.drawImage(webcam,80,0,480,480,0,0,640,640);
+   	else if(isVideo) mc.drawImage(webcam,80,0,480,480,0,0,640,640);
 	gl.bindTexture(gl.TEXTURE_2D, camtex);
    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mcan);
    	if(useback) {
@@ -123,7 +145,14 @@ function startvideo() {
  	navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
         webcam.srcObject = stream;
         initImages();
-    });
+        isVideo = true;
+    })
+    .catch(function(err) {
+  		webcam = new Image();
+  		webcam.src = 'popet.jpg';
+  		initImages();
+  		isVideo = false;
+	});
 }
 
 //You need to bind a user interaction in order to start video input on Safari and iOS

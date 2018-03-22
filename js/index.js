@@ -5,9 +5,10 @@ var frontimage = new Image(); //front image
 var backimage = new Image(); //back image
 var frontcrop = new Image(); //front image cropped
 var backcrop = new Image(); //back image cropped
-
 var usefront = false;
 var useback = false;
+
+var i = 0;
 
 var mcan = document.createElement('canvas');
 mcan.width = 640;
@@ -84,9 +85,9 @@ function UIPoint(x,y,color) {
     this.y = y;
   }
   this.get = function(){
-  	var tx = this.x/320-1;
-  	var ty = this.y/320-1;
-  	return [tx,-ty];
+  	this.tx = this.x/320-1;
+  	this.ty = this.y/320-1;
+  	return [this.tx,-this.ty];
   }
 }
 
@@ -433,3 +434,5 @@ function handleBackImage(files){
     	useback = true;
     }
 }
+
+
