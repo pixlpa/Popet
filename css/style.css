@@ -7,9 +7,23 @@ canvas {
 	left:8px;
 	z-index:0;
 }
+.total{
+	width:100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-wrap:wrap;
+}
+
+.canvas-holder {
+	width:640px;
+	height:640px;
+	box-shadow:20px 20px 0px #b1bfcb;
+}
 
 #c {
-	box-shadow:20px 20px 0px #b1bfcb;
 }
 
 #ui_canvas {
@@ -17,10 +31,8 @@ canvas {
 }
 
 #extras {
-	position:absolute;
-	left:700px;
-	top:8px;
-	width:480px;
+	margin-left: 50px;
+	width:380px;
 	font-family: Helvetica, sans-serif;
 	font-size:0.75em;
 }

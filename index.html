@@ -11,9 +11,11 @@
 </head>
 
 <body>  
-	<div style="font-size:4em;font-family:sans-serif;"><div id="startmessage"><em>click anywhere to start<div style="font-size:0.25em;">(and click "Allow" to enable camera)</em></div></div>
-	<canvas id='c' width="640px" height="640px"></canvas>
-	<canvas id="ui_canvas" width="640px" height="640px"></canvas></div>
+	<div class="total">
+	<div class="canvas-holder">
+		<canvas id='c' width="640px" height="640px"></canvas>
+		<canvas id="ui_canvas" width="640px" height="640px"></canvas>
+	</div>
 	<div id="extras">
 		<h1><em>POPET</em></h1>
 		<ul class="helper"><li>Click anywhere to start camera</li>
@@ -29,6 +31,8 @@
 		<li><strong>Background Image:</strong> <input type="file" id="backinput" onchange="handleBackImage(this.files)"></li>
 		</ul>
 	</div>
+	</div>
+	</div>
 	<div id="gif-over" >
 		<div id="gif-overback" ></div>
 		<div id="gif-overfront">
@@ -37,7 +41,6 @@
 		<button onclick="closegif()">X</button>
 		</div>
 	</div>
-
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script type="text/javascript" src='js/pxslabs.js'></script>
     <script type="text/javascript" src='js/pxshaders.js'></script>
